@@ -1,10 +1,18 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { EmpresaResponse } from '../models/Interfaces/EmpresaResponse';
 
-@Injectable({
-  providedIn: 'root'
+const httpOptions = { // altera as configurações para ter a autorização especifica do servidor
+  headers: new HttpHeaders ({
+    'Content-Type': 'application/json', // para padronizar
+    'Authrization': `Bearer `, // passar o token aqui
+  }),
+};
+
+
+@Injectable({  // Declara que a classe pode ser injetada em outros componentes ou serviços.
+  providedIn: 'root' // Torna o serviço disponível em toda a aplicação de forma eficiente e otimizada, criando uma única instância (singleton) e só carregando-o quando necessário.
 })
 
 export class EmpresaService {

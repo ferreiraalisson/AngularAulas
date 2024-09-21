@@ -14,29 +14,33 @@ import { RouterModule, RouterOutlet } from '@angular/router';
   styleUrl: './empresa.component.css'
 })
 export class EmpresaComponent implements OnInit, OnDestroy {
-    // declarando - definindo o tipo   e insantanciando a variavel
+    // declarando - definindo o tipo e insantanciando a variavel
   private readonly destroy$:Subject<void>= new Subject();
 
-  empresasResponse! : EmpresaResponse[]; //variável que armazena o valor de todas as empresas
+  empresasResponse! : EmpresaResponse[]; //variável que armazena o valor de todas as empresas - conecta com html 
   empresaResponse! : EmpresaResponse; // variável que armazena o valor de uma empresa
 
                      //instanciando no typescript - privacidade objeto: classe
   constructor(private empresaService: EmpresaService){} // método que serve para ser chamado quando instancia a classe
 
   ngOnInit(): void {
-    this.getEmpresa();
+    this.getEmpresas();
    // this.getEmpresaPorId(20);
   }
 
   //método que faz a extração e chamada do servido
-  getEmpresa():void{   // getEmpresas() é puxado lá do service.ts - subscribe dentro das chaves passar os parametros
-    this.empresaService.getEmpresas().pipe(takeUntil(this.destroy$)).subscribe({ //pipe é responsável por criar um tubo para a conexão
-      next: (response)=> {
-        response && (this.empresasResponse = response)
-        console.log(this.empresasResponse);
-      }, //mapear o erro
+  getEmpresas():void{   // getEmpresas() é puxado lá do service.ts - subscribe dentro das chaves passar os parametros
+    this.empresaService.getEmpresas()
+      .pipe(
+        takeUntil(this.destroy$)
+      )
+      .subscribe({ //pipe é responsável por criar um tubo para a conexão
+        next: (response)=> {
+          response && (this.empresasResponse = response)
+          console.log(this.empresasResponse);
+        }, //mapear o erro
         error: (error)=> console.log(error),
-    });
+      });
   }
 
   getEmpresaPorId(id: number):void {
